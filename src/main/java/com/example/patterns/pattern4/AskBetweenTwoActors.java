@@ -1,4 +1,4 @@
-package com.example.patterns.pattern2;
+package com.example.patterns.pattern4;
 
 import akka.actor.typed.ActorRef;
 import akka.actor.typed.ActorSystem;
@@ -10,12 +10,11 @@ import akka.actor.typed.javadsl.Receive;
 
 import java.io.IOException;
 
-public class RequestResponse extends AbstractBehavior<RequestResponse.Command> {
+public class AskBetweenTwoActors extends AbstractBehavior<AskBetweenTwoActors.Command> {
 
   @SuppressWarnings({"DuplicatedCode", "ResultOfMethodCallIgnored"})
   public static void main(String[] args) {
-    final ActorSystem<Command> system =
-        ActorSystem.create(create(), "sample-system");
+    final ActorSystem<Command> system = ActorSystem.create(create(), "sample-system");
 
     system.tell(StartDemo.INSTANCE);
 
@@ -32,37 +31,28 @@ public class RequestResponse extends AbstractBehavior<RequestResponse.Command> {
 
   public enum StartDemo implements Command {INSTANCE}
 
-  public record Response(String message) implements Command {}
-
   public static Behavior<Command> create() {
-    return Behaviors.setup(RequestResponse::new);
+    return Behaviors.setup(AskBetweenTwoActors::new);
   }
 
-  private final ActorRef<CookieFabric.Request> cookieFabric;
+  private final ActorRef<Hal.Command> hal;
 
-  private RequestResponse(ActorContext<Command> context) {
+  private AskBetweenTwoActors(ActorContext<Command> context) {
     super(context);
-    this.cookieFabric = context.spawn(CookieFabric.create(), "cookie-fabric");
+    this.hal = context.spawn(Hal.create(), "hal");
   }
 
   @Override
   public Receive<Command> createReceive() {
     return newReceiveBuilder()
         .onMessage(StartDemo.class, notUsed -> onStartDemo())
-        .onMessage(Response.class, this::onResponse)
         .build();
   }
 
   private Behavior<Command> onStartDemo() {
-    ActorRef<Response> replyTo = getContext().getSelf().narrow();
-    cookieFabric.tell(new CookieFabric.Request("give me cookies1", replyTo));
-    cookieFabric.tell(new CookieFabric.Request("give me cookies2", replyTo));
-    cookieFabric.tell(new CookieFabric.Request("give me cookies3", replyTo));
+    getContext().spawn(Dave.create(hal), "dave");
+    getContext().spawn(Dave.create(hal), "dave2");
     return this;
   }
 
-  private Behavior<Command> onResponse(Response response) {
-    getContext().getLog().info(response.message());
-    return this;
-  }
 }

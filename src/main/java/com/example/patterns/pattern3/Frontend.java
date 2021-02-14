@@ -29,7 +29,7 @@ public class Frontend extends AbstractBehavior<Frontend.Command> {
 
   private int taskIdCounter = 0;
 
-  public Frontend(ActorContext<Command> context) {
+  private Frontend(ActorContext<Command> context) {
     super(context);
     this.backendResponseAdapter =
         context.messageAdapter(Backend.Response.class, WrappedBackendResponse::new);

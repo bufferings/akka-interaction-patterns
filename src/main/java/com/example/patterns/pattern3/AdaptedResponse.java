@@ -41,7 +41,7 @@ public class AdaptedResponse extends AbstractBehavior<AdaptedResponse.Command> {
 
   private final ActorRef<Frontend.Command> frontend;
 
-  public AdaptedResponse(ActorContext<Command> context) {
+  private AdaptedResponse(ActorContext<Command> context) {
     super(context);
     this.frontend = context.spawn(Frontend.create(), "frontend");
   }

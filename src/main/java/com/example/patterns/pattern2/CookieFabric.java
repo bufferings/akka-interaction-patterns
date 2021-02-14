@@ -15,7 +15,7 @@ public class CookieFabric extends AbstractBehavior<CookieFabric.Request> {
 
   public record Request(String query, ActorRef<RequestResponse.Response> replyTo) {}
 
-  public CookieFabric(ActorContext<Request> context) {
+  private CookieFabric(ActorContext<Request> context) {
     super(context);
   }
 

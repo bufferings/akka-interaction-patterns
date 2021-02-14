@@ -38,7 +38,7 @@ public class FireAndForget extends AbstractBehavior<FireAndForget.Command> {
 
   private final ActorRef<Printer.PrintMe> printer;
 
-  public FireAndForget(ActorContext<Command> context) {
+  private FireAndForget(ActorContext<Command> context) {
     super(context);
     this.printer = context.spawn(Printer.create(), "printer");
   }

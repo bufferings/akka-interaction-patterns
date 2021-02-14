@@ -27,7 +27,7 @@ public class Backend extends AbstractBehavior<Backend.Request> {
     return Behaviors.setup(Backend::new);
   }
 
-  public Backend(ActorContext<Request> context) {
+  private Backend(ActorContext<Request> context) {
     super(context);
   }
 
