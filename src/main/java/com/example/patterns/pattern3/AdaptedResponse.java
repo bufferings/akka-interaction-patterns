@@ -33,7 +33,7 @@ public class AdaptedResponse extends AbstractBehavior<AdaptedResponse.Command> {
 
   public enum StartDemo implements Command {INSTANCE}
 
-  public record TranslationComplete(URI uri) implements Command {}
+  public record TranslationCompleted(URI uri) implements Command {}
 
   public static Behavior<Command> create() {
     return Behaviors.setup(AdaptedResponse::new);
@@ -50,20 +50,20 @@ public class AdaptedResponse extends AbstractBehavior<AdaptedResponse.Command> {
   public Receive<Command> createReceive() {
     return newReceiveBuilder()
         .onMessage(StartDemo.class, notUsed -> onStartDemo())
-        .onMessage(TranslationComplete.class, this::onTranslationComplete)
+        .onMessage(TranslationCompleted.class, this::onTranslationComplete)
         .build();
   }
 
   private Behavior<Command> onStartDemo() {
-    ActorRef<TranslationComplete> replyTo = getContext().getSelf().narrow();
+    ActorRef<TranslationCompleted> replyTo = getContext().getSelf().narrow();
     frontend.tell(new Frontend.Translate(URI.create("http://example.com/aaa"), replyTo));
     frontend.tell(new Frontend.Translate(URI.create("http://example.com/bbb"), replyTo));
     frontend.tell(new Frontend.Translate(URI.create("http://example.com/ccc"), replyTo));
     return this;
   }
 
-  private Behavior<Command> onTranslationComplete(TranslationComplete translationComplete) {
-    getContext().getLog().info(translationComplete.uri().toString());
+  private Behavior<Command> onTranslationComplete(TranslationCompleted translationCompleted) {
+    getContext().getLog().info(translationCompleted.uri().toString());
     return this;
   }
 

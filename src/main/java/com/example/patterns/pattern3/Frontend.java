@@ -15,7 +15,7 @@ public class Frontend extends AbstractBehavior<Frontend.Command> {
 
   public interface Command {}
 
-  public record Translate(URI site, ActorRef<AdaptedResponse.TranslationComplete> replyTo) implements Command {}
+  public record Translate(URI site, ActorRef<AdaptedResponse.TranslationCompleted> replyTo) implements Command {}
 
   private record WrappedBackendResponse(Backend.Response response) implements Command {}
 
@@ -25,7 +25,7 @@ public class Frontend extends AbstractBehavior<Frontend.Command> {
 
   private final ActorRef<Backend.Response> backendResponseAdapter;
 
-  private final Map<Integer, ActorRef<AdaptedResponse.TranslationComplete>> inProgress = new HashMap<>();
+  private final Map<Integer, ActorRef<AdaptedResponse.TranslationCompleted>> inProgress = new HashMap<>();
 
   private int taskIdCounter = 0;
 
@@ -60,7 +60,7 @@ public class Frontend extends AbstractBehavior<Frontend.Command> {
       getContext().getLog().info("Progress {} {}%", rsp.taskId(), rsp.progress());
     } else if (response instanceof Backend.JobCompleted rsp) {
       getContext().getLog().info("Completed {}", rsp.taskId());
-      inProgress.get(rsp.taskId()).tell(new AdaptedResponse.TranslationComplete(rsp.result()));
+      inProgress.get(rsp.taskId()).tell(new AdaptedResponse.TranslationCompleted(rsp.result()));
       inProgress.remove(rsp.taskId());
     } else {
       return Behaviors.unhandled();
