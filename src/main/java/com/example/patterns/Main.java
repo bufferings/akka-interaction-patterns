@@ -5,6 +5,9 @@ import akka.actor.typed.javadsl.Behaviors;
 
 import java.io.IOException;
 
+/**
+ * This is just a minimum sample to run ActorSystem.
+ */
 public class Main {
 
   public enum Message {INSTANCE}
