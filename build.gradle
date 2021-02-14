@@ -1,0 +1,31 @@
+plugins {
+    id 'java-library'
+    id 'idea'
+}
+
+java {
+  // IDEA haven't yet supported Toolchains (https://youtrack.jetbrains.com/issue/IDEA-252328)
+//  toolchain {
+//    languageVersion = JavaLanguageVersion.of(15)
+//  }
+  sourceCompatibility = JavaVersion.VERSION_15
+  targetCompatibility = JavaVersion.VERSION_15
+}
+
+repositories {
+  mavenCentral()
+}
+
+def versions = [
+  ScalaBinary    : "2.13"
+]
+
+dependencies {
+  implementation platform("com.typesafe.akka:akka-bom_${versions.ScalaBinary}:2.6.12")
+  implementation "com.typesafe.akka:akka-actor-typed_${versions.ScalaBinary}"
+  implementation "ch.qos.logback:logback-classic:1.2.3"
+}
+
+tasks.withType(JavaCompile) {
+  options.compilerArgs += ['--enable-preview']
+}
