@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public class FireAndForget extends AbstractBehavior<FireAndForget.Command> {
 
-  @SuppressWarnings("DuplicatedCode")
+  @SuppressWarnings({"DuplicatedCode", "ResultOfMethodCallIgnored"})
   public static void main(String[] args) {
     final ActorSystem<Command> system =
         ActorSystem.create(create(), "sample-system");
@@ -21,7 +21,6 @@ public class FireAndForget extends AbstractBehavior<FireAndForget.Command> {
 
     try {
       System.out.println(">>> Press ENTER to exit <<<");
-      //noinspection ResultOfMethodCallIgnored
       System.in.read();
     } catch (IOException ignored) {
     } finally {

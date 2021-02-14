@@ -13,7 +13,7 @@ import java.net.URI;
 
 public class AdaptedResponse extends AbstractBehavior<AdaptedResponse.Command> {
 
-  @SuppressWarnings("DuplicatedCode")
+  @SuppressWarnings({"DuplicatedCode", "ResultOfMethodCallIgnored"})
   public static void main(String[] args) {
     final ActorSystem<Command> system =
         ActorSystem.create(AdaptedResponse.create(), "sample-system");
@@ -22,7 +22,6 @@ public class AdaptedResponse extends AbstractBehavior<AdaptedResponse.Command> {
 
     try {
       System.out.println(">>> Press ENTER to exit <<<");
-      //noinspection ResultOfMethodCallIgnored
       System.in.read();
     } catch (IOException ignored) {
     } finally {
