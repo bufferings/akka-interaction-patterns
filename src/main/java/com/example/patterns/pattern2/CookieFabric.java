@@ -13,7 +13,7 @@ public class CookieFabric extends AbstractBehavior<CookieFabric.Request> {
     return Behaviors.setup(CookieFabric::new);
   }
 
-  public record Request(String query, ActorRef<RequestResponseSystem.Response> replyTo) {}
+  public record Request(String query, ActorRef<RequestResponse.Response> replyTo) {}
 
   public CookieFabric(ActorContext<Request> context) {
     super(context);
@@ -27,9 +27,7 @@ public class CookieFabric extends AbstractBehavior<CookieFabric.Request> {
   }
 
   private Behavior<Request> onRequest(Request request) {
-    request.replyTo().tell(
-        new RequestResponseSystem.Response("Here are the cookies for " + request.query())
-    );
+    request.replyTo().tell(new RequestResponse.Response("Here are the cookies for " + request.query()));
     return this;
   }
 
