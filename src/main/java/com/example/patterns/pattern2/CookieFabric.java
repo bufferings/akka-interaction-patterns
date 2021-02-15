@@ -27,6 +27,7 @@ public class CookieFabric extends AbstractBehavior<CookieFabric.Request> {
   }
 
   private Behavior<Request> onRequest(Request request) {
+    getContext().getLog().info("Received cookie request: " + request.query());
     request.replyTo().tell(new RequestResponse.Response("Here are the cookies for " + request.query()));
     return this;
   }
